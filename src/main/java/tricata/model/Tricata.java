@@ -32,4 +32,8 @@ public class Tricata extends Observable {
 	public void deal() {
 
 	}
+
+	public Card peekNextCard() {
+		return deck.peek();
+	}
 }
