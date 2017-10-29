@@ -50,4 +50,19 @@ public class Card implements Serializable {
 	public String toString() {
 		return "Card(number:" + number + ", type:" + type.name() + ", color:" + color.name() + ")";
 	}
+
+	public int getSimilarityDegree(Card other) {
+		int similarity = 0;
+		if (other.number == this.number) {
+			similarity++;
+		}
+		if (other.color == this.color) {
+			similarity++;
+		}
+		if (other.type == this.type) {
+			similarity++;
+		}
+		assert similarity < 3;
+		return similarity;
+	}
 }

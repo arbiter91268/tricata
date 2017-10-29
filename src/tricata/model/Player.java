@@ -16,5 +16,14 @@ public class Player {
 		id = nextID++;
 	}
 
+	public boolean hasWon() {
+		int first = hand[0].getSimilarityDegree(hand[1]);
+		int second = hand[0].getSimilarityDegree(hand[2]);
+		return first == second && first == 2;
+	}
+
+	public int getID() {
+		return this.id;
+	}
 
 }
