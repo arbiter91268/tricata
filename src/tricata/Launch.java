@@ -1,5 +1,7 @@
 package tricata;
 
+import tricata.draw.GameWindow;
+
 import javax.swing.*;
 
 /**
@@ -20,6 +22,6 @@ public final class Launch implements Runnable {
 
 	@Override
 	public void run() {
-
+		new GameWindow().setVisible(true);
 	}
 }
