@@ -1,4 +1,8 @@
+# directories
 .idea
 /.gradle
 gradle
 output
+
+# files
+*.iml
