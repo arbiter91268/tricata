@@ -7,7 +7,7 @@ import javax.swing.*;
  *
  * @author Kristian
  */
-public final class Launch {
+public final class Launch implements Runnable {
 
 	public static void main(String[] args) {
 		try {
@@ -15,5 +15,11 @@ public final class Launch {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		SwingUtilities.invokeLater(new Launch());
+	}
+
+	@Override
+	public void run() {
+
 	}
 }

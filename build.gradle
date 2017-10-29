@@ -4,7 +4,7 @@ plugins {
 apply plugin: 'application'
 apply plugin: 'java'
 
-group 'untitled'
+group 'tricata'
 version '1.0-SNAPSHOT'
 
 //mainClassName = 'swen222.project1.SwordAndShield'
