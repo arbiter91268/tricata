@@ -1,0 +1,30 @@
+plugins {
+        //     id 'com.github.johnrengelman.shadow' version '1.2.4'
+}
+apply plugin: 'application'
+apply plugin: 'java'
+
+group 'untitled'
+version '1.0-SNAPSHOT'
+
+//mainClassName = 'swen222.project1.SwordAndShield'
+
+//sourceCompatibility = 1.8
+/*shadowJar {
+    baseName = 'SwordsAndShields'
+    classifier = null
+    version = null
+    destinationDir = new File(".")
+    from sourceSets.main.allSource
+}*/
+repositories {
+    mavenCentral()
+
+}
+dependencies {
+    compile group: 'junit', name: 'junit', version: '4.12'
+    compileOnly 'org.projectlombok:lombok:1.16.18'
+    compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
+}
+
+assemble.dependsOn shadowJar
