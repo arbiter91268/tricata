@@ -17,29 +17,26 @@ import java.util.concurrent.TimeUnit;
 
 public class GameWindow extends JFrame implements Observer{
 
-	private JPanel board;
-
-	private Sprite deck;
-	private Sprite bin;
+	private BoardPanel board;
 
 	private Tricata game;
 
 	public GameWindow() {
+		initComponents();
+	}
+
+	private void initComponents() {
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 		setTitle("Tricata");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-		board = new JPanel();
-		board.setPreferredSize(new Dimension(800, 600));
+		game = new Tricata(this, 2);
+
+		board = new BoardPanel(this, game);
 		splitPane.setRightComponent(board);
 
-		game = new Tricata(this, 2);
-		deck = new Sprite(null).setFlipped(true).setBounds(new Rectangle(
-				board.getWidth() / 2 - 120, board.getHeight() / 2 - 100, 100, 200)).build();
-		bin = new Sprite(null).setBounds(new Rectangle((board.getWidth() / 2) + 20,
-				(board.getHeight() / 2) - 100, 100, 200)).build();
 
 		JToolBar toolBar = new JToolBar();
 		splitPane.setLeftComponent(toolBar);
@@ -62,39 +59,21 @@ public class GameWindow extends JFrame implements Observer{
 		pack();
 		setLocationRelativeTo(null);
 		game.deal();
-		deck.setCard(game.peekNextCardInDeck()).build();
-		bin.setCard(game.peekNextCardInBin()).build();
-		redraw();
+		board.constructSprites();
+		board.repaint();
 		//playDealAnimation();
-
-		board.addComponentListener(new ComponentListener() {
-			@Override
-			public void componentResized(ComponentEvent e) {
-
-			}
-
-			public void componentMoved(ComponentEvent e) {}
-			public void componentShown(ComponentEvent e) {}
-			public void componentHidden(ComponentEvent e) {}
-		});
 	}
 
 	private void playDealAnimation() {
 		SwingTimerTimingSource timer = new SwingTimerTimingSource();
 		timer.init();
-		timer.addPostTickListener((a,b) -> redraw());
+		timer.addPostTickListener((a,b) -> board.repaint());
 		Animator animator = new Animator.Builder(timer).setDuration(800, TimeUnit.MILLISECONDS).setDisposeTimingSource(true).build();
 
 	}
 
-	private void redraw() {
-		Graphics2D g = (Graphics2D)board.getGraphics();
-		deck.draw(g);
-		bin.draw(g);
-	}
-
 	@Override
 	public void update(Observable o, Object arg) {
-		redraw();
+		board.repaint();
 	}
 }

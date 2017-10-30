@@ -33,4 +33,8 @@ public class Player {
 		return temp;
 	}
 
+	public Card peekCard(int index) {
+		return hand[index];
+	}
+
 }

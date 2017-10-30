@@ -53,4 +53,8 @@ public class Tricata extends Observable {
 		}
 		return bin.peek();
 	}
+
+	public Player getPlayer(int player) {
+		return players.get(player);
+	}
 }
