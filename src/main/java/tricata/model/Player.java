@@ -26,4 +26,11 @@ public class Player {
 		return this.id;
 	}
 
+	public Card setCard(int index, Card newCard) {
+		assert index >= 0 && index <= 2;
+		Card temp = hand[index];
+		hand[index] = newCard;
+		return temp;
+	}
+
 }

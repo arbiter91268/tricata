@@ -9,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.TimeUnit;
@@ -33,6 +35,12 @@ public class GameWindow extends JFrame implements Observer{
 		board.setPreferredSize(new Dimension(800, 600));
 		splitPane.setRightComponent(board);
 
+		game = new Tricata(this, 2);
+		deck = new Sprite(null).setFlipped(true).setBounds(new Rectangle(
+				board.getWidth() / 2 - 120, board.getHeight() / 2 - 100, 100, 200)).build();
+		bin = new Sprite(null).setBounds(new Rectangle((board.getWidth() / 2) + 20,
+				(board.getHeight() / 2) - 100, 100, 200)).build();
+
 		JToolBar toolBar = new JToolBar();
 		splitPane.setLeftComponent(toolBar);
 
@@ -53,7 +61,22 @@ public class GameWindow extends JFrame implements Observer{
 
 		pack();
 		setLocationRelativeTo(null);
-		playDealAnimation();
+		game.deal();
+		deck.setCard(game.peekNextCardInDeck()).build();
+		bin.setCard(game.peekNextCardInBin()).build();
+		redraw();
+		//playDealAnimation();
+
+		board.addComponentListener(new ComponentListener() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+
+			}
+
+			public void componentMoved(ComponentEvent e) {}
+			public void componentShown(ComponentEvent e) {}
+			public void componentHidden(ComponentEvent e) {}
+		});
 	}
 
 	private void playDealAnimation() {
@@ -72,52 +95,6 @@ public class GameWindow extends JFrame implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (board != null) redraw();
-	}
-
-	private Image getCardImage(Card card) {
-		if (card == null) {
-			return null;
-		}
-		ImageList item = null;
-		outer : switch (card.getType()) {
-			case DEMON:
-				switch (card.getColor()) {
-					case RED:
-						item = ImageList.RED_DEMON;
-						break outer;
-					case GREEN:
-						item = ImageList.GREEN_DEMON;
-						break outer;
-					case PURPLE:
-						item = ImageList.PURPLE_DEMON;
-						break outer;
-				}
-			case GENTLEMAN:
-				switch (card.getColor()) {
-					case RED:
-						item = ImageList.RED_GENTLEMAN;
-						break outer;
-					case GREEN:
-						item = ImageList.GREEN_GENTLEMAN;
-						break outer;
-					case PURPLE:
-						item = ImageList.PURPLE_GENTLEMAN;
-						break outer;
-				}
-			case GIRL:
-				switch (card.getColor()) {
-					case RED:
-						item = ImageList.RED_LADY;
-						break outer;
-					case GREEN:
-						item = ImageList.GREEN_LADY;
-						break outer;
-					case PURPLE:
-						item = ImageList.PURPLE_LADY;
-						break outer;
-				}
-		}
-		return item.getImage();
+		redraw();
 	}
 }
