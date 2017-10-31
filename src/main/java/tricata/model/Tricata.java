@@ -32,6 +32,31 @@ public class Tricata extends Observable {
 		deck.addAll(cards);
 	}
 
+	public Card pickupCard(boolean isFromDeck) {
+		if (isFromDeck) {
+			return deck.pop();
+		}
+		return bin.pop();
+	}
+
+	/**
+	 * places card at location
+	 * @param where -1 for the bin, otherwise (num / 3) to define player, and (num % 3) to define slot
+	 */
+	public void placeCard(Card toPlace, int where) {
+		if (where == -1) {
+			bin.push(toPlace);
+			setChanged();
+			notifyObservers();
+			return;
+		}
+		int player = where / 3;
+		int index = where % 3;
+		Card dispose = getPlayer(player).setCard(index, toPlace);
+		bin.push(dispose);
+		nextTurn();
+	}
+
 	public void deal() {
 		bin.push(deck.pop());
 		for (int i = 0; i < 3; i++) {
@@ -56,5 +81,24 @@ public class Tricata extends Observable {
 
 	public Player getPlayer(int player) {
 		return players.get(player);
+	}
+
+	public Player getCurrentPlayer() {
+		return players.get(currentTurn);
+	}
+
+	private void nextTurn() {
+		currentTurn++;
+		if (currentTurn >= players.size()) {
+			currentTurn = 0;
+		}
+		setChanged();
+		notifyObservers();
+		for (Player p : players) { // check if any player has won. may not detect on setting up the game
+			if (p.hasWon()) {
+				setChanged();
+				notifyObservers(p.name);
+			}
+		}
 	}
 }

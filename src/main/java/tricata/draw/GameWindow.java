@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class GameWindow extends JFrame implements Observer{
 
 	private BoardPanel board;
+	private JLabel infoLabel;
 
 	private Tricata game;
 
@@ -50,11 +51,9 @@ public class GameWindow extends JFrame implements Observer{
 		JButton btnNewButton_2 = new JButton("New button");
 		toolBar.add(btnNewButton_2);
 
-		JCheckBox chckbxNewCheckBox = new JCheckBox("New check box");
-		toolBar.add(chckbxNewCheckBox);
-
-		JCheckBox chckbxNewCheckBox_1 = new JCheckBox("New check box");
-		toolBar.add(chckbxNewCheckBox_1);
+		toolBar.addSeparator();
+		infoLabel = new JLabel();
+		toolBar.add(infoLabel);
 
 		pack();
 		setLocationRelativeTo(null);
@@ -74,6 +73,17 @@ public class GameWindow extends JFrame implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
+		board.refreshSprites();
 		board.repaint();
+		refreshInfo();
+		if (arg != null) {
+			String name = (String)arg;
+			JOptionPane.showMessageDialog(this, name + " has won the round!");
+			System.exit(0);
+		}
+	}
+
+	private void refreshInfo() {
+		infoLabel.setText(game.getCurrentPlayer().name + "'s turn");
 	}
 }

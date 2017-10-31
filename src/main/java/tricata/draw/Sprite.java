@@ -14,6 +14,8 @@ public class Sprite {
 	private boolean flipped;
 	private Card card;
 
+	private static final Font NUMBERS = new Font("Calibri", 0, 22);
+
 
 	public Sprite(Card card) {
 		this.card = card;
@@ -53,9 +55,16 @@ public class Sprite {
 
 	void draw(Graphics2D g) {
 		if (card == null) {
+			g.setColor(Color.darkGray);
+			g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+			g.setColor(Color.BLACK);
 			return;
 		}
 		g.drawImage(image, bounds.x, bounds.y, bounds.width, bounds.height, null);
+		if (!flipped) {
+			g.setFont(NUMBERS);
+			g.drawString(Integer.toString(card.getNumber()), bounds.x + 20, bounds.y + bounds.height - (bounds.height / 5));
+		}
 	}
 
 	public boolean contains(int x, int y) {
