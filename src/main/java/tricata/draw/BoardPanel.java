@@ -107,11 +107,17 @@ public class BoardPanel extends JPanel implements MouseListener, MouseMotionList
 			selectedCard = game.pickupCard(true);
 			selectedCardSprite = new Sprite(selectedCard).setBounds(new Rectangle(x - (BASE_WIDTH / 2),
 					y - (BASE_HEIGHT / 2), BASE_WIDTH, BASE_HEIGHT)).build();
-		} else if (bin.contains(x, y) && !cardPickedUp && game.peekNextCardInBin() != null) {
+			repaint();
+			return;
+		}
+		if (bin.contains(x, y) && !cardPickedUp && game.peekNextCardInBin() != null) {
 			cardPickedUp = true;
 			selectedCard = game.pickupCard(false);
+			System.out.println(selectedCard.toString());
 			selectedCardSprite = new Sprite(selectedCard).setBounds(new Rectangle(x - (BASE_WIDTH / 2),
 					y - (BASE_HEIGHT / 2), BASE_WIDTH, BASE_HEIGHT)).build();
+			repaint();
+			return;
 		}
 		if (cardPickedUp) {
 			boolean anythingSelected = false;
@@ -132,6 +138,7 @@ public class BoardPanel extends JPanel implements MouseListener, MouseMotionList
 			if (anythingSelected) {
 				selectedCard = null;
 				cardPickedUp = false;
+				selectedCardSprite = null;
 			}
 		}
 	}

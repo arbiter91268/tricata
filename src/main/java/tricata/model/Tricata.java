@@ -46,8 +46,7 @@ public class Tricata extends Observable {
 	public void placeCard(Card toPlace, int where) {
 		if (where == -1) {
 			bin.push(toPlace);
-			setChanged();
-			notifyObservers();
+			nextTurn();
 			return;
 		}
 		int player = where / 3;
