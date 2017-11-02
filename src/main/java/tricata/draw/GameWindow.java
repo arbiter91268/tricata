@@ -33,7 +33,7 @@ public class GameWindow extends JFrame implements Observer{
 		setTitle("Tricata");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-		game = new Tricata(this, 2);
+		game = new Tricata(this, 2, Tricata.Mode.NORMAL);
 
 		board = new BoardPanel(this, game);
 		splitPane.setRightComponent(board);

@@ -17,9 +17,32 @@ public class Player {
 	}
 
 	public boolean hasWon() {
-		int first = hand[0].getSimilarityDegree(hand[1]);
-		int second = hand[0].getSimilarityDegree(hand[2]);
-		return first == second && first == 2;
+		int count = 0;
+		boolean numChanged = false, typeChanged = false, colorChanged = false;
+		Card.Type initialType = hand[0].getType();
+		Card.Color initialColor = hand[0].getColor();
+		int initialNumber = hand[0].getNumber();
+		for (int i = 0; i < 3; i++) {
+			if (!initialType.equals(hand[i].getType())) {
+				typeChanged = true;
+			}
+			if (!initialColor.equals(hand[i].getColor())) {
+				colorChanged = true;
+			}
+			if (initialNumber != hand[i].getNumber()) {
+				numChanged = true;
+			}
+		}
+		if (!numChanged) {
+			count++;
+		}
+		if (!typeChanged) {
+			count++;
+		}
+		if (!colorChanged) {
+			count++;
+		}
+		return count >= 2;
 	}
 
 	public int getID() {

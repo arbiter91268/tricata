@@ -20,6 +20,8 @@ public class BoardPanel extends JPanel implements MouseListener, MouseMotionList
 	private Sprite deck, bin;
 	private Sprite[] first = new Sprite[3];
 	private Sprite[] second = new Sprite[3];
+	private Sprite[] third = new Sprite[3];
+	private Sprite[] fourth = new Sprite[3];
 
 	private boolean cardPickedUp = false;
 	private Card selectedCard;
@@ -52,6 +54,8 @@ public class BoardPanel extends JPanel implements MouseListener, MouseMotionList
 		int largeWidth = (int)(BASE_WIDTH * 1.4);
 		int largeHeight = (int)(BASE_HEIGHT * 1.4);
 
+		int count = game.getPlayers().size();
+
 		deck = new Sprite(game.peekNextCardInDeck()).setBounds(new Rectangle((width / 2) - largeWidth - 20, (height / 2) - (largeHeight / 2),
 				largeWidth, largeHeight)).setFlipped(true).build();
 		bin = new Sprite(game.peekNextCardInBin()).setBounds(new Rectangle((width / 2) + 20, (height / 2) - (largeHeight / 2),
@@ -60,10 +64,34 @@ public class BoardPanel extends JPanel implements MouseListener, MouseMotionList
 		final int initialOffset = 20 + BASE_WIDTH + (BASE_WIDTH / 2);
 
 		for (int i = 0; i < 3; i++) {
-			first[i] = new Sprite(game.getPlayer(0).peekCard(i)).setBounds(new Rectangle((width / 2) - initialOffset +
-					((BASE_WIDTH * i) + (20 * i)), height - BASE_HEIGHT - 20, BASE_WIDTH, BASE_HEIGHT)).build();
-			second[i] = new Sprite(game.getPlayer(1).peekCard(i)).setBounds(new Rectangle((width / 2) - initialOffset
-					+ ((BASE_WIDTH * i) + (20 * i)), 20, BASE_WIDTH, BASE_HEIGHT)).setRotation(180).build();
+			switch (count) {
+				case 2:
+					first[i] = new Sprite(game.getPlayer(0).peekCard(i)).setBounds(new Rectangle((width / 2) - initialOffset +
+							((BASE_WIDTH * i) + (20 * i)), height - BASE_HEIGHT - 20, BASE_WIDTH, BASE_HEIGHT)).build();
+					second[i] = new Sprite(game.getPlayer(1).peekCard(i)).setBounds(new Rectangle((width / 2) - initialOffset
+							+ ((BASE_WIDTH * i) + (20 * i)), 20, BASE_WIDTH, BASE_HEIGHT)).setRotation(180).build();
+					break;
+				case 3:
+					first[i] = new Sprite(game.getPlayer(0).peekCard(i)).setBounds(new Rectangle((width / 2) - initialOffset +
+							((BASE_WIDTH * i) + (20 * i)), height - BASE_HEIGHT - 20, BASE_WIDTH, BASE_HEIGHT)).build();
+					second[i] = new Sprite(game.getPlayer(1).peekCard(i)).setBounds(new Rectangle(50, (height / 2) - initialOffset
+							+ ((BASE_WIDTH * i) + (20 * i)), BASE_HEIGHT, BASE_WIDTH)).setRotation(90).build();
+					third[i] = new Sprite(game.getPlayer(2).peekCard(i)).setBounds(new Rectangle(width - 20 - BASE_HEIGHT, (height / 2) - initialOffset
+							+ ((BASE_WIDTH * i) + (20 * i)), BASE_HEIGHT, BASE_WIDTH)).setRotation(270).build();
+					break;
+				case 4:
+					first[i] = new Sprite(game.getPlayer(0).peekCard(i)).setBounds(new Rectangle((width / 2) - initialOffset +
+							((BASE_WIDTH * i) + (20 * i)), height - BASE_HEIGHT - 20, BASE_WIDTH, BASE_HEIGHT)).build();
+					second[i] = new Sprite(game.getPlayer(1).peekCard(i)).setBounds(new Rectangle(50, (height / 2) - initialOffset
+							+ ((BASE_WIDTH * i) + (20 * i)), BASE_HEIGHT, BASE_WIDTH)).setRotation(90).build();
+					third[i] = new Sprite(game.getPlayer(2).peekCard(i)).setBounds(new Rectangle((width / 2) - initialOffset
+							+ ((BASE_WIDTH * i) + (20 * i)), 20, BASE_WIDTH, BASE_HEIGHT)).setRotation(180).build();
+					fourth[i] = new Sprite(game.getPlayer(3).peekCard(i)).setBounds(new Rectangle(width - 20 - BASE_HEIGHT, (height / 2) - initialOffset
+						+ ((BASE_WIDTH * i) + (20 * i)), BASE_HEIGHT, BASE_WIDTH)).setRotation(270).build();
+					break;
+				default:
+					throw new IllegalArgumentException("Invalid number of players");
+			}
 		}
 	}
 

@@ -7,15 +7,24 @@ import java.util.*;
  */
 public class Tricata extends Observable {
 
+	public enum Mode {
+		NORMAL,
+		UP_THE_ANTE,
+		ROYAL_CHAOS;
+	}
+
 	private List<Player> players = new ArrayList<>();
 	private Stack<Card> deck = new Stack<Card>();
 	private Stack<Card> bin = new Stack<Card>();
 
 	private int currentTurn = 0;
 
-	public Tricata(Observer observer, int numplayers) {
+	private final Mode gamemode;
+
+	public Tricata(Observer observer, int numplayers, Mode mode) {
 		addObserver(observer);
 		List<Card> cards = new ArrayList<>();
+		this.gamemode = mode;
 		for (Card.Type type : Card.Type.values()) {
 			for (Card.Color color : Card.Color.values()) {
 				for (byte i = 1; i <= 3; i++) {
@@ -37,6 +46,10 @@ public class Tricata extends Observable {
 			return deck.pop();
 		}
 		return bin.pop();
+	}
+
+	public List<Player> getPlayers() {
+		return Collections.unmodifiableList(players);
 	}
 
 	/**
