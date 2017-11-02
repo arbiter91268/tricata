@@ -36,6 +36,7 @@ public class BoardPanel extends JPanel implements MouseListener, MouseMotionList
 		addComponentListener(new ComponentListener() {
 			@Override
 			public void componentResized(ComponentEvent e) {
+				rescaleSprites();
 				repaint();
 			}
 
@@ -124,6 +125,31 @@ public class BoardPanel extends JPanel implements MouseListener, MouseMotionList
 				BASE_HEIGHT + 40);
 		if (cardPickedUp) {
 			selectedCardSprite.draw(gr);
+		}
+	}
+
+	private void rescaleSprites() {
+		final Dimension now = getSize();
+		final Dimension preferred = getPreferredSize();
+		double scaleX = now.getWidth() / preferred.getWidth();
+		double scaleY = now.getHeight() / preferred.getHeight();
+		deck.setBounds(new Rectangle((int)(deck.bounds.x * scaleX), (int)(deck.bounds.y * scaleY),
+				(int)(deck.bounds.width * scaleX), (int)(deck.bounds.height * scaleY)));
+		bin.setBounds(new Rectangle((int)(bin.bounds.x * scaleX), (int)(bin.bounds.y * scaleY),
+				(int)(bin.bounds.width * scaleX), (int)(bin.bounds.height * scaleY)));
+		for (int i = 0; i < 3; i++) {
+			first[i].setBounds(new Rectangle((int)(first[i].bounds.x * scaleX), (int)(first[i].bounds.y * scaleY),
+					(int)(BASE_WIDTH * scaleX), (int)(BASE_HEIGHT * scaleY)));
+			second[i].setBounds(new Rectangle((int)(second[i].bounds.x * scaleX), (int)(second[i].bounds.y * scaleY),
+					(int)(BASE_WIDTH * scaleX), (int)(BASE_HEIGHT * scaleY)));
+			if (game.getPlayers().size() >= 3) {
+				third[i].setBounds(new Rectangle((int)(third[i].bounds.x * scaleX), (int)(third[i].bounds.y * scaleY),
+						(int)(BASE_WIDTH * scaleX), (int)(BASE_HEIGHT * scaleY)));
+			}
+			if (game.getPlayers().size() == 4) {
+				fourth[i].setBounds(new Rectangle((int)(fourth[i].bounds.x * scaleX), (int)(fourth[i].bounds.y * scaleY),
+						(int)(BASE_WIDTH * scaleX), (int)(BASE_HEIGHT * scaleY)));
+			}
 		}
 	}
 

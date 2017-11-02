@@ -11,6 +11,8 @@ import java.awt.*;
 @SuppressWarnings("serial")
 public class MainMenu extends JFrame {
 
+	private static final Font BUTTON_FONT = new Font("Candara", Font.PLAIN, 24);
+
 	public MainMenu() {
 		initComponents();
 	}
@@ -25,12 +27,16 @@ public class MainMenu extends JFrame {
 		JButton joinGameButton = new JButton("Join Game");
 		JButton instructionsButton = new JButton("Instructions");
 		JButton exitButton = new JButton("Exit");
+		newGameButton.setFont(BUTTON_FONT);
+		joinGameButton.setFont(BUTTON_FONT);
+		instructionsButton.setFont(BUTTON_FONT);
+		exitButton.setFont(BUTTON_FONT);
 		getContentPane().add(newGameButton);
 		getContentPane().add(joinGameButton);
 		getContentPane().add(instructionsButton);
 		getContentPane().add(exitButton);
 		pack();
-		setSize(new Dimension(350, 500));
+		setSize(new Dimension(400, 500));
 		setLocationRelativeTo(null);
 
 		newGameButton.addActionListener((event) -> new CreateGameMenu().setVisible(true));

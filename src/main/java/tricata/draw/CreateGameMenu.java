@@ -1,5 +1,7 @@
 package tricata.draw;
 
+import tricata.model.Tricata;
+
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.GroupLayout.Alignment;
@@ -145,5 +147,28 @@ public class CreateGameMenu extends JFrame {
 		getContentPane().setLayout(groupLayout);
 		pack();
 		setLocationRelativeTo(null);
+
+		createGameButton.addActionListener((event) -> {
+			GameConfiguration configuration = new GameConfiguration();
+			configuration.name = gameNameField.getText();
+			configuration.numPlayers = numPlayersSelector.getSelectedIndex() + 2;
+			configuration.numRounds = (int)numRoundsSpinner.getValue();
+			if (royalChaosCheckbox.isSelected() && upTheAnteCheckbox.isSelected()) {
+				configuration.mode = Tricata.Mode.ALL;
+			} else if (royalChaosCheckbox.isSelected()) {
+				configuration.mode = Tricata.Mode.ROYAL_CHAOS;
+			} else if (upTheAnteCheckbox.isSelected()) {
+				configuration.mode = Tricata.Mode.UP_THE_ANTE;
+			} else {
+				configuration.mode = Tricata.Mode.NORMAL;
+			}
+			configuration.online = onlineCheckbox.isSelected();
+			if (configuration.online) {
+				configuration.password = new String(passwordField.getPassword());
+			}
+			new GameWindow(configuration).setVisible(true);
+			setVisible(false);
+		});
+		cancelButton.addActionListener((event) -> setVisible(false));
 	}
 }
