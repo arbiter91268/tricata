@@ -29,6 +29,11 @@ public class ScaledRectangle extends Rectangle {
 		this.scaleY = scaleY;
 	}
 
+	public void setScale(double scaleX, double scaleY) {
+		this.setScaleX(scaleX);
+		this.setScaleY(scaleY);
+	}
+
 	@Override
 	public double getX() {
 		return this.x * scaleX;
@@ -47,5 +52,11 @@ public class ScaledRectangle extends Rectangle {
 	@Override
 	public double getHeight() {
 		return this.height * scaleY;
+	}
+
+	@Override
+	public boolean contains(int x, int y) {
+		Rectangle resized = new Rectangle((int)getX(), (int)getY(), (int)getWidth(), (int)getHeight());
+		return resized.contains(x, y);
 	}
 }

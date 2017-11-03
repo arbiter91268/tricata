@@ -23,7 +23,7 @@ public class GameWindow extends JFrame implements Observer{
 	private Tricata game;
 
 	public GameWindow(GameConfiguration configuration) {
-		game = new Tricata(this, 2, Tricata.Mode.NORMAL, 3, "new game");
+		game = new Tricata(this, configuration.numPlayers, Tricata.Mode.NORMAL, 3, "new game");
 		initComponents();
 	}
 

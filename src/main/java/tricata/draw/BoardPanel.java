@@ -57,9 +57,9 @@ public class BoardPanel extends JPanel implements MouseListener, MouseMotionList
 
 		int count = game.getPlayers().size();
 
-		deck = new Sprite(game.peekNextCardInDeck()).setBounds(new Rectangle((width / 2) - largeWidth - 20, (height / 2) - (largeHeight / 2),
+		deck = new Sprite(game.peekNextCardInDeck()).setBounds(new ScaledRectangle((width / 2) - largeWidth - 20, (height / 2) - (largeHeight / 2),
 				largeWidth, largeHeight)).setFlipped(true).build();
-		bin = new Sprite(game.peekNextCardInBin()).setBounds(new Rectangle((width / 2) + 20, (height / 2) - (largeHeight / 2),
+		bin = new Sprite(game.peekNextCardInBin()).setBounds(new ScaledRectangle((width / 2) + 20, (height / 2) - (largeHeight / 2),
 				largeWidth, largeHeight)).build();
 
 		final int initialOffset = 20 + BASE_WIDTH + (BASE_WIDTH / 2);
@@ -67,28 +67,28 @@ public class BoardPanel extends JPanel implements MouseListener, MouseMotionList
 		for (int i = 0; i < 3; i++) {
 			switch (count) {
 				case 2:
-					first[i] = new Sprite(game.getPlayer(0).peekCard(i)).setBounds(new Rectangle((width / 2) - initialOffset +
+					first[i] = new Sprite(game.getPlayer(0).peekCard(i)).setBounds(new ScaledRectangle((width / 2) - initialOffset +
 							((BASE_WIDTH * i) + (20 * i)), height - BASE_HEIGHT - 20, BASE_WIDTH, BASE_HEIGHT)).build();
-					second[i] = new Sprite(game.getPlayer(1).peekCard(i)).setBounds(new Rectangle((width / 2) - initialOffset
-							+ ((BASE_WIDTH * i) + (20 * i)), 20, BASE_WIDTH, BASE_HEIGHT)).setRotation(180).build();
+					second[i] = new Sprite(game.getPlayer(1).peekCard(i)).setBounds(new ScaledRectangle((width / 2) - initialOffset
+							+ ((BASE_WIDTH * i) + (20 * i)), 20, BASE_WIDTH, BASE_HEIGHT)).build();
 					break;
 				case 3:
-					first[i] = new Sprite(game.getPlayer(0).peekCard(i)).setBounds(new Rectangle((width / 2) - initialOffset +
+					first[i] = new Sprite(game.getPlayer(0).peekCard(i)).setBounds(new ScaledRectangle((width / 2) - initialOffset +
 							((BASE_WIDTH * i) + (20 * i)), height - BASE_HEIGHT - 20, BASE_WIDTH, BASE_HEIGHT)).build();
-					second[i] = new Sprite(game.getPlayer(1).peekCard(i)).setBounds(new Rectangle(50, (height / 2) - initialOffset
-							+ ((BASE_WIDTH * i) + (20 * i)), BASE_HEIGHT, BASE_WIDTH)).setRotation(90).build();
-					third[i] = new Sprite(game.getPlayer(2).peekCard(i)).setBounds(new Rectangle(width - 20 - BASE_HEIGHT, (height / 2) - initialOffset
-							+ ((BASE_WIDTH * i) + (20 * i)), BASE_HEIGHT, BASE_WIDTH)).setRotation(270).build();
+					second[i] = new Sprite(game.getPlayer(1).peekCard(i)).setBounds(new ScaledRectangle(50, (height / 2) - initialOffset
+							+ ((BASE_HEIGHT * i) + (20 * i)), BASE_WIDTH, BASE_HEIGHT)).build();
+					third[i] = new Sprite(game.getPlayer(2).peekCard(i)).setBounds(new ScaledRectangle(width - 20 - BASE_HEIGHT, (height / 2) - initialOffset
+							+ ((BASE_HEIGHT * i) + (20 * i)), BASE_WIDTH, BASE_HEIGHT)).build();
 					break;
 				case 4:
-					first[i] = new Sprite(game.getPlayer(0).peekCard(i)).setBounds(new Rectangle((width / 2) - initialOffset +
+					first[i] = new Sprite(game.getPlayer(0).peekCard(i)).setBounds(new ScaledRectangle((width / 2) - initialOffset +
 							((BASE_WIDTH * i) + (20 * i)), height - BASE_HEIGHT - 20, BASE_WIDTH, BASE_HEIGHT)).build();
-					second[i] = new Sprite(game.getPlayer(1).peekCard(i)).setBounds(new Rectangle(50, (height / 2) - initialOffset
-							+ ((BASE_WIDTH * i) + (20 * i)), BASE_HEIGHT, BASE_WIDTH)).setRotation(90).build();
-					third[i] = new Sprite(game.getPlayer(2).peekCard(i)).setBounds(new Rectangle((width / 2) - initialOffset
-							+ ((BASE_WIDTH * i) + (20 * i)), 20, BASE_WIDTH, BASE_HEIGHT)).setRotation(180).build();
-					fourth[i] = new Sprite(game.getPlayer(3).peekCard(i)).setBounds(new Rectangle(width - 20 - BASE_HEIGHT, (height / 2) - initialOffset
-						+ ((BASE_WIDTH * i) + (20 * i)), BASE_HEIGHT, BASE_WIDTH)).setRotation(270).build();
+					second[i] = new Sprite(game.getPlayer(1).peekCard(i)).setBounds(new ScaledRectangle(50, (height / 2) - initialOffset
+							+ ((BASE_HEIGHT * i) + (20 * i)), BASE_WIDTH, BASE_HEIGHT)).build();
+					third[i] = new Sprite(game.getPlayer(2).peekCard(i)).setBounds(new ScaledRectangle((width / 2) - initialOffset
+							+ ((BASE_WIDTH * i) + (20 * i)), 20, BASE_WIDTH, BASE_HEIGHT)).build();
+					fourth[i] = new Sprite(game.getPlayer(3).peekCard(i)).setBounds(new ScaledRectangle(width - 20 - BASE_HEIGHT, (height / 2) - initialOffset
+						+ ((BASE_HEIGHT * i) + (20 * i)), BASE_WIDTH, BASE_HEIGHT)).build();
 					break;
 				default:
 					throw new IllegalArgumentException("Invalid number of players");
@@ -102,9 +102,16 @@ public class BoardPanel extends JPanel implements MouseListener, MouseMotionList
 		}
 		deck.setCard(game.peekNextCardInDeck()).build();
 		bin.setCard(game.peekNextCardInBin()).build();
+		int count = game.getPlayers().size();
 		for (int i = 0; i < 3; i++) {
 			first[i].setCard(game.getPlayer(0).peekCard(i)).build();
 			second[i].setCard(game.getPlayer(1).peekCard(i)).build();
+			if (count >= 3) {
+				third[i].setCard(game.getPlayer(2).peekCard(i)).build();
+			}
+			if (count == 4) {
+				fourth[i].setCard(game.getPlayer(3).peekCard(i)).build();
+			}
 		}
 	}
 
@@ -114,9 +121,16 @@ public class BoardPanel extends JPanel implements MouseListener, MouseMotionList
 		Graphics2D gr = (Graphics2D)g;
 		deck.draw(gr);
 		bin.draw(gr);
+		int count = game.getPlayers().size();
 		for (int i = 0; i < 3; i++) {
 			first[i].draw(gr);
 			second[i].draw(gr);
+			if (count >= 3) {
+				third[i].draw(gr);
+			}
+			if (count == 4) {
+				fourth[i].draw(gr);
+			}
 		}
 		gr.setFont(INFO_TEXT);
 		gr.drawString(game.getPlayer(0).name, (int)(getPreferredSize().getWidth() / 2) - 20 - BASE_WIDTH - (BASE_WIDTH / 2),
@@ -133,22 +147,16 @@ public class BoardPanel extends JPanel implements MouseListener, MouseMotionList
 		final Dimension preferred = getPreferredSize();
 		double scaleX = now.getWidth() / preferred.getWidth();
 		double scaleY = now.getHeight() / preferred.getHeight();
-		deck.setBounds(new Rectangle((int)(deck.bounds.x * scaleX), (int)(deck.bounds.y * scaleY),
-				(int)(deck.bounds.width * scaleX), (int)(deck.bounds.height * scaleY)));
-		bin.setBounds(new Rectangle((int)(bin.bounds.x * scaleX), (int)(bin.bounds.y * scaleY),
-				(int)(bin.bounds.width * scaleX), (int)(bin.bounds.height * scaleY)));
+		deck.bounds.setScale(scaleX, scaleY);
+		bin.bounds.setScale(scaleX, scaleY);
 		for (int i = 0; i < 3; i++) {
-			first[i].setBounds(new Rectangle((int)(first[i].bounds.x * scaleX), (int)(first[i].bounds.y * scaleY),
-					(int)(BASE_WIDTH * scaleX), (int)(BASE_HEIGHT * scaleY)));
-			second[i].setBounds(new Rectangle((int)(second[i].bounds.x * scaleX), (int)(second[i].bounds.y * scaleY),
-					(int)(BASE_WIDTH * scaleX), (int)(BASE_HEIGHT * scaleY)));
+			first[i].bounds.setScale(scaleX, scaleY);
+			second[i].bounds.setScale(scaleX, scaleY);
 			if (game.getPlayers().size() >= 3) {
-				third[i].setBounds(new Rectangle((int)(third[i].bounds.x * scaleX), (int)(third[i].bounds.y * scaleY),
-						(int)(BASE_WIDTH * scaleX), (int)(BASE_HEIGHT * scaleY)));
+				third[i].bounds.setScale(scaleX, scaleY);
 			}
 			if (game.getPlayers().size() == 4) {
-				fourth[i].setBounds(new Rectangle((int)(fourth[i].bounds.x * scaleX), (int)(fourth[i].bounds.y * scaleY),
-						(int)(BASE_WIDTH * scaleX), (int)(BASE_HEIGHT * scaleY)));
+				fourth[i].bounds.setScale(scaleX, scaleY);
 			}
 		}
 	}
@@ -159,7 +167,7 @@ public class BoardPanel extends JPanel implements MouseListener, MouseMotionList
 		if (deck.contains(x, y) && !cardPickedUp && game.peekNextCardInDeck() != null) {
 			cardPickedUp = true;
 			selectedCard = game.pickupCard(true);
-			selectedCardSprite = new Sprite(selectedCard).setBounds(new Rectangle(x - (BASE_WIDTH / 2),
+			selectedCardSprite = new Sprite(selectedCard).setBounds(new ScaledRectangle(x - (BASE_WIDTH / 2),
 					y - (BASE_HEIGHT / 2), BASE_WIDTH, BASE_HEIGHT)).build();
 			repaint();
 			return;
@@ -168,7 +176,7 @@ public class BoardPanel extends JPanel implements MouseListener, MouseMotionList
 			cardPickedUp = true;
 			selectedCard = game.pickupCard(false);
 			System.out.println(selectedCard.toString());
-			selectedCardSprite = new Sprite(selectedCard).setBounds(new Rectangle(x - (BASE_WIDTH / 2),
+			selectedCardSprite = new Sprite(selectedCard).setBounds(new ScaledRectangle(x - (BASE_WIDTH / 2),
 					y - (BASE_HEIGHT / 2), BASE_WIDTH, BASE_HEIGHT)).build();
 			repaint();
 			return;
@@ -179,6 +187,7 @@ public class BoardPanel extends JPanel implements MouseListener, MouseMotionList
 				anythingSelected = true;
 				game.placeCard(selectedCard, -1);
 			} else {
+				int count = game.getPlayers().size();
 				for (int i = 0; i < 3; i++) {
 					if (first[i].contains(x, y) && game.getCurrentPlayer().getID() == 0) {
 						anythingSelected = true;
@@ -186,6 +195,12 @@ public class BoardPanel extends JPanel implements MouseListener, MouseMotionList
 					} else if (second[i].contains(x, y) && game.getCurrentPlayer().getID() == 1) {
 						anythingSelected = true;
 						game.placeCard(selectedCard, 3 + i);
+					} else if (count >= 3 && third[i].contains(x, y) && game.getCurrentPlayer().getID() == 2) {
+						anythingSelected = true;
+						game.placeCard(selectedCard, 6 + i);
+					} else if (count == 4 && fourth[i].contains(x, y) && game.getCurrentPlayer().getID() == 3) {
+						anythingSelected = true;
+						game.placeCard(selectedCard, 9 + i);
 					}
 				}
 			}

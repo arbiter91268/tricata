@@ -8,7 +8,7 @@ import java.awt.image.ImageObserver;
 
 public class Sprite {
 
-	public Rectangle bounds;
+	public ScaledRectangle bounds;
 	private Image image;
 	private int rotation;
 	private boolean flipped;
@@ -31,7 +31,7 @@ public class Sprite {
 		return this;
 	}
 
-	public Sprite setBounds(Rectangle bounds) {
+	public Sprite setBounds(ScaledRectangle bounds) {
 		this.bounds = bounds;
 		return this;
 	}
@@ -56,14 +56,15 @@ public class Sprite {
 	void draw(Graphics2D g) {
 		if (card == null) {
 			g.setColor(Color.darkGray);
-			g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+			g.drawRect((int)bounds.getX(), (int)bounds.getY(), (int)bounds.getWidth(), (int)bounds.getHeight());
 			g.setColor(Color.BLACK);
 			return;
 		}
-		g.drawImage(image, bounds.x, bounds.y, bounds.width, bounds.height, null);
+		g.drawImage(image, (int)bounds.getX(), (int)bounds.getY(), (int)bounds.getWidth(), (int)bounds.getHeight(), null);
 		if (!flipped) {
 			g.setFont(NUMBERS);
-			g.drawString(Integer.toString(card.getNumber()), bounds.x + 20, bounds.y + bounds.height - (bounds.height / 5));
+			g.drawString(Integer.toString(card.getNumber()), (int)(bounds.getX() + 20),
+					(int)(bounds.getY() + bounds.getHeight() - (bounds.getHeight() / 5)));
 		}
 	}
 
