@@ -133,10 +133,23 @@ public class BoardPanel extends JPanel implements MouseListener, MouseMotionList
 			}
 		}
 		gr.setFont(INFO_TEXT);
-		gr.drawString(game.getPlayer(0).name, (int)(getPreferredSize().getWidth() / 2) - 20 - BASE_WIDTH - (BASE_WIDTH / 2),
-				(int)(getPreferredSize().getHeight() - 30 - BASE_HEIGHT));
-		gr.drawString(game.getPlayer(1).name, (int)(getPreferredSize().getWidth() / 2) - 20 - BASE_WIDTH - (BASE_WIDTH / 2),
-				BASE_HEIGHT + 40);
+		gr.drawString(game.getPlayer(0).name, (int)(first[0].bounds.getX()), (int)(first[0].bounds.getY() - INFO_TEXT.getSize()));
+		switch (count) {
+			case 2:
+				gr.drawString(game.getPlayer(1).name, (int)(second[0].bounds.getX()), (int)(second[0].bounds.getY() + second[0].bounds.getHeight() + INFO_TEXT.getSize()));
+				break;
+			case 3:
+				gr.drawString(game.getPlayer(1).name, (int)(second[0].bounds.getX()), (int)(second[0].bounds.getY() - INFO_TEXT.getSize()));
+				gr.drawString(game.getPlayer(2).name, (int)(third[0].bounds.getX()), (int)(third[0].bounds.getY() - INFO_TEXT.getSize()));
+				break;
+			case 4:
+				gr.drawString(game.getPlayer(1).name, (int)(second[0].bounds.getX()), (int)(second[0].bounds.getY() - INFO_TEXT.getSize()));
+				gr.drawString(game.getPlayer(2).name, (int)(third[0].bounds.getX()), (int)(third[0].bounds.getY() + third[0].bounds.getHeight() + INFO_TEXT.getSize()));
+				gr.drawString(game.getPlayer(3).name, (int)(fourth[0].bounds.getX()), (int)(fourth[0].bounds.getY() - INFO_TEXT.getSize()));
+				break;
+			default:
+				break;
+		}
 		if (cardPickedUp) {
 			selectedCardSprite.draw(gr);
 		}

@@ -7,10 +7,6 @@ import tricata.model.Tricata;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.TimeUnit;
@@ -23,7 +19,7 @@ public class GameWindow extends JFrame implements Observer{
 	private Tricata game;
 
 	public GameWindow(GameConfiguration configuration) {
-		game = new Tricata(this, configuration.numPlayers, Tricata.Mode.NORMAL, 3, "new game");
+		game = new Tricata(this, configuration.numPlayers, configuration.mode, 3, configuration.name);
 		initComponents();
 	}
 
@@ -47,8 +43,9 @@ public class GameWindow extends JFrame implements Observer{
 		JButton btnNewButton_1 = new JButton("New button");
 		toolBar.add(btnNewButton_1);
 
-		JButton btnNewButton_2 = new JButton("New button");
-		toolBar.add(btnNewButton_2);
+		JButton exitGameButton = new JButton("Exit Game");
+		toolBar.add(exitGameButton);
+		exitGameButton.addActionListener(event -> dispose());
 
 		toolBar.addSeparator();
 		infoLabel = new JLabel();
@@ -83,6 +80,12 @@ public class GameWindow extends JFrame implements Observer{
 	}
 
 	private void refreshInfo() {
-		infoLabel.setText(game.getCurrentPlayer().name + "'s turn");
+		StringBuilder sb = new StringBuilder();
+		sb.append("Game Name: ");
+		sb.append(game.name);
+		sb.append('\t');
+		sb.append(game.getCurrentPlayer().name);
+		sb.append("'s turn");
+		infoLabel.setText(sb.toString());
 	}
 }
