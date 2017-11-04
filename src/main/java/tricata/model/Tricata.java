@@ -17,8 +17,8 @@ public class Tricata extends Observable {
 	public final String name;
 	private final int maxRounds;
 	private List<Player> players = new ArrayList<>();
-	private Stack<Card> deck = new Stack<Card>();
-	private Stack<Card> bin = new Stack<Card>();
+	private Stack<Card> deck = new Stack<>();
+	private Stack<Card> bin = new Stack<>();
 
 	private int currentTurn = 0;
 	private int currentRound = 0;

@@ -19,6 +19,7 @@ public class GameWindow extends JFrame implements Observer{
 	private Tricata game;
 
 	public GameWindow(GameConfiguration configuration) {
+		setTitle(configuration.name);
 		game = new Tricata(this, configuration.numPlayers, configuration.mode, 3, configuration.name);
 		initComponents();
 	}
@@ -27,7 +28,6 @@ public class GameWindow extends JFrame implements Observer{
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		getContentPane().add(splitPane, BorderLayout.CENTER);
-		setTitle("Tricata");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		board = new BoardPanel(this, game);
@@ -83,7 +83,7 @@ public class GameWindow extends JFrame implements Observer{
 		StringBuilder sb = new StringBuilder();
 		sb.append("Game Name: ");
 		sb.append(game.name);
-		sb.append('\t');
+		sb.append("  ");
 		sb.append(game.getCurrentPlayer().name);
 		sb.append("'s turn");
 		infoLabel.setText(sb.toString());
