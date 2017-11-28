@@ -8,6 +8,7 @@ public class Player {
 	public String name;
 	private Card[] hand = new Card[3];
 	private final int id;
+	private int score;
 
 	private static int nextID = 0;
 
@@ -58,6 +59,14 @@ public class Player {
 
 	public Card peekCard(int index) {
 		return hand[index];
+	}
+
+	public void incrementScore() {
+		this.score++;
+	}
+
+	public int getScore() {
+		return this.score;
 	}
 
 }

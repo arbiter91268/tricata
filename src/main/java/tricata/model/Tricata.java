@@ -27,10 +27,19 @@ public class Tricata extends Observable {
 
 	public Tricata(Observer observer, int numplayers, Mode mode, int rounds, String name) {
 		addObserver(observer);
-		List<Card> cards = new ArrayList<>();
 		this.gamemode = mode;
 		this.name = name;
 		this.maxRounds = rounds;
+		for (int i = 1; i <= numplayers; i++) {
+			players.add(new Player("Player " + i));
+		}
+		createCards();
+	}
+
+	private void createCards() {
+		deck.clear();
+		bin.clear();
+		List<Card> cards = new ArrayList<>();
 		for (Card.Type type : Card.Type.values()) {
 			for (Card.Color color : Card.Color.values()) {
 				for (byte i = 1; i <= 3; i++) {
@@ -41,10 +50,9 @@ public class Tricata extends Observable {
 		assert cards.size() == 27;
 		Collections.shuffle(cards);
 		Collections.shuffle(cards); // double shuffle for more randomness
-		for (int i = 1; i <= numplayers; i++) {
-			players.add(new Player("Player " + i));
-		}
 		deck.addAll(cards);
+		setChanged();
+		notifyObservers();
 	}
 
 	public Card pickupCard(boolean isFromDeck) {
@@ -114,8 +122,15 @@ public class Tricata extends Observable {
 		notifyObservers();
 		for (Player p : players) { // check if any player has won. may not detect on setting up the game
 			if (p.hasWon()) {
+				p.incrementScore();
+				if (p.getScore() >= maxRounds) {
+					setChanged();
+					notifyObservers(p.name + "has won");
+					return;
+				}
 				setChanged();
 				notifyObservers(p.name);
+				createCards();
 			}
 		}
 	}

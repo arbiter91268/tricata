@@ -1,5 +1,6 @@
 package tricata.draw;
 
+import io.netty.channel.socket.SocketChannel;
 import org.jdesktop.core.animation.timing.Animator;
 import org.jdesktop.swing.animation.timing.sources.SwingTimerTimingSource;
 import tricata.model.Card;
@@ -20,6 +21,9 @@ public class GameWindow extends JFrame implements Observer{
 
 	public GameWindow(GameConfiguration configuration) {
 		setTitle(configuration.name);
+		if (configuration.online) {
+
+		}
 		game = new Tricata(this, configuration.numPlayers, configuration.mode, 3, configuration.name);
 		initComponents();
 	}
@@ -69,13 +73,20 @@ public class GameWindow extends JFrame implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		board.refreshSprites();
-		board.repaint();
-		refreshInfo();
+		if (board != null) {
+			board.refreshSprites();
+			board.repaint();
+			refreshInfo();
+		}
 		if (arg != null) {
 			String name = (String)arg;
-			JOptionPane.showMessageDialog(this, name + " has won the round!");
-			System.exit(0);
+			if (name.contains("has won")) {
+				JOptionPane.showMessageDialog(this, name.replace("has won", "") + " has won the game!");
+				System.exit(0);
+			} else {
+				JOptionPane.showMessageDialog(this, name + "has won the round!");
+				game.deal();
+			}
 		}
 	}
 
