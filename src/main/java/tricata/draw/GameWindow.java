@@ -1,13 +1,15 @@
 package tricata.draw;
 
-import io.netty.channel.socket.SocketChannel;
 import org.jdesktop.core.animation.timing.Animator;
 import org.jdesktop.swing.animation.timing.sources.SwingTimerTimingSource;
-import tricata.model.Card;
 import tricata.model.Tricata;
+import tricata.network.TricataServer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.TimeUnit;
@@ -16,13 +18,21 @@ public class GameWindow extends JFrame implements Observer{
 
 	private BoardPanel board;
 	private JLabel infoLabel;
+	private boolean isOnline = false, isHost = false;
 
 	private Tricata game;
 
 	public GameWindow(GameConfiguration configuration) {
 		setTitle(configuration.name);
 		if (configuration.online) {
-
+			try {
+				isOnline = true;
+				isHost = true;
+			} catch (Exception t) {
+				JOptionPane.showMessageDialog(this, "An error occured while setting up the server. \n" +
+					t.getMessage());
+				dispose();
+			}
 		}
 		game = new Tricata(this, configuration.numPlayers, configuration.mode, 3, configuration.name);
 		initComponents();
@@ -41,11 +51,28 @@ public class GameWindow extends JFrame implements Observer{
 		JToolBar toolBar = new JToolBar();
 		splitPane.setLeftComponent(toolBar);
 
-		JButton btnNewButton = new JButton("New button");
-		toolBar.add(btnNewButton);
+		if (isOnline && isHost) {
+			JButton btnExtIP = new JButton("Get External IP Address");
+			toolBar.add(btnExtIP);
 
-		JButton btnNewButton_1 = new JButton("New button");
-		toolBar.add(btnNewButton_1);
+			JButton btnIntIP = new JButton("Get Internal IP Address");
+			toolBar.add(btnIntIP);
+
+			btnExtIP.addActionListener(event -> {
+				try {
+					URL local = new URL("http://checkip.amazonaws.com");
+					BufferedReader in = new BufferedReader(new InputStreamReader(local.openStream()));
+					String ip = in.readLine();
+					JOptionPane.showMessageDialog(this, "Your IP Address: " + ip);
+				} catch (Exception exc) {
+					JOptionPane.showMessageDialog(this, "An error occured while trying to retrieve "
+						+ "your exernal IP address.\n Cause: " + exc.getMessage());
+				}
+			});
+			btnIntIP.addActionListener(event -> {
+
+			});
+		}
 
 		JButton exitGameButton = new JButton("Exit Game");
 		toolBar.add(exitGameButton);

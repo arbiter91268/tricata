@@ -40,6 +40,7 @@ public class MainMenu extends JFrame {
 		setLocationRelativeTo(null);
 
 		newGameButton.addActionListener((event) -> new CreateGameMenu().setVisible(true));
+		joinGameButton.addActionListener(event -> new JoinGameMenu().setVisible(true));
 		exitButton.addActionListener((event) -> System.exit(0));
 	}
 }

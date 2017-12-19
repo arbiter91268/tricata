@@ -15,5 +15,6 @@ public final class GameConfiguration {
 	@NonNull int numRounds;
 	boolean online;
 	@Nullable String password;
+	@Nullable short port;
 	@NonNull Tricata.Mode mode;
 }
