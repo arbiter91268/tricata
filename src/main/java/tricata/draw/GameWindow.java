@@ -19,22 +19,25 @@ public class GameWindow extends JFrame implements Observer{
 	private BoardPanel board;
 	private JLabel infoLabel;
 	private boolean isOnline = false, isHost = false;
+	private GameConfiguration config;
 
 	private Tricata game;
 
 	public GameWindow(GameConfiguration configuration) {
 		setTitle(configuration.name);
+		game = new Tricata(this, configuration.numPlayers, configuration.mode, 3, configuration.name);
 		if (configuration.online) {
 			try {
 				isOnline = true;
 				isHost = true;
+				new TricataServer(this, configuration.name, configuration.password, configuration.port).start();
 			} catch (Exception t) {
 				JOptionPane.showMessageDialog(this, "An error occured while setting up the server. \n" +
-					t.getMessage());
+						t.getMessage());
 				dispose();
 			}
 		}
-		game = new Tricata(this, configuration.numPlayers, configuration.mode, 3, configuration.name);
+		config = configuration;
 		initComponents();
 	}
 
@@ -122,6 +125,11 @@ public class GameWindow extends JFrame implements Observer{
 		sb.append("Game Name: ");
 		sb.append(game.name);
 		sb.append("  ");
+		if (isOnline && isHost) {
+			sb.append("Port: ");
+			sb.append(config.port);
+			sb.append("   ");
+		}
 		sb.append(game.getCurrentPlayer().name);
 		sb.append("'s turn");
 		infoLabel.setText(sb.toString());

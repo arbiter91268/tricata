@@ -33,6 +33,11 @@ public class TricataInboundHandler extends ChannelInboundHandlerAdapter {
 	}
 
 	@Override
+	public void channelActive(final ChannelHandlerContext context) {
+		System.out.println("User " + context.name() + " has connected");
+	}
+
+	@Override
 	public void exceptionCaught(ChannelHandlerContext context, Throwable cause) {
 
 	}
